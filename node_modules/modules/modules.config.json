@@ -1,0 +1,41 @@
+{
+// Config options for CommonJS.php
+//  any lines begining with // will be treated as comments,
+//  no other comment styles are allowed
+//  once comments are removed the document must be valid JSON
+
+// common options
+
+// directory to search for .js files to treat as modules
+//  defaults to the folder in which ComonJS.php is located
+// "mod_dir":"/var/www/mysite/js/modules",
+
+// functions echo if false, return if true - defaults to false
+// "return":true,
+
+// options used by html
+
+// where to point the script tags - should point to CommonJS.php,
+//  or a file that calls its functions
+// "src_url":"/js/modules/modules.php",
+
+// each module is in its own script tag if true, defaults to false
+// "separate":true,
+
+// string prepended to each script tag line, defaults to one tab
+// "indent":"\t",
+
+// options used by module and modules
+
+// headers that CommonJS.php should send
+//  you may want to disable a header if the server will be setting it
+//  Content-Type - any string set here will be sent, if true, "text/javascript" is used, false no header is sent
+//  Expires - any string parsable by strtotime(), "+n days" format recommended
+//  Last-Modified - if truthy, sends the last modified date
+// "headers":{ "Content-Type":false, "Expires":"+90 days", "Last-Modified":true },
+
+// what file to load, and what function to call to compress the modules
+//  if "function" is specified, and "include" is not, the function will still be used if available
+//  defaults to false, meaning no compression is done
+// "compress":{ "function":[ "JSMin", "minify" ], "include":"/var/www/mysite/lib/JSMin.php" }
+}

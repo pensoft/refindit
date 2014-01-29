@@ -1,0 +1,3 @@
+jslint --silent *.js
+jslint --silent dbs/*.js
+jslint --silent client/client.js

@@ -84,18 +84,29 @@ function pubMedParse(xml) {
 			}
 			var abstr1 = path(article, ['Abstract', 0, 'AbstractText', 0, '_']);
 			var abstr2 = path(article, ['Abstract', 0, 'AbstractText', 0]);
+			var pagesStr  = path(article, ['Pagination', 0, 'MedlinePgn', 0]);
+			var spage, epage,
+			    pages = /([0-9]{1,}) *- *([0-9]{1,})/.exec(pagesStr);
+			if (pages) {
+				spage = pages[1];
+				epage = pages[2];
+			} else {
+				spage = pagesStr;
+			}
+			var issueYear	= path(article, ['Journal', 0, 'JournalIssue', 0, 'PubDate', 0, 'Year', 0]);
+			var articleYear = path(article, ['ArticleDate', 0, 'Year', 0]);
 			return {
 				source:			'PubMed',
 				authors:		authors,
 				doi:			doipath,
 				href:			typeof doipath !== 'undefined' ? "http://dx.doi.org/" + doipath : undefined,
 				title:			path(article, ['ArticleTitle', 0]),
-				year:			path(article, ['ArticleDate', 0, 'Year', 0]),
+				year:			articleYear || issueYear,
 				publishedIn:	path(article, ['Journal', 0, 'Title', 0]),
 				volume:			path(article, ['Journal', 0, 'JournalIssue', 0, 'Volume', 0]),
 				issue:			path(article, ['Journal', 0, 'JournalIssue', 0, 'Issue', 0]),
-				spage:			undefined,
-				epage:			undefined,
+				spage:			spage || undefined,
+				epage:			epage,
 				firstauthor:	authors[0] || [],
 				editors:		undefined,
 				fullCitation:	undefined,

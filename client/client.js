@@ -168,30 +168,27 @@ function attachDropdown(e) {
 	}
 }
 
-function formatResults(text) {
-	var lst = [];
-	try{
-		lst = JSON.parse(text);
-	}
-	catch(e){
-		p(text);
-	}
-	return lst.map(renderResult).reduce(function (a, b) {return a + b; }, "");
-}
-
 function noInput(type){
 	alert('you must type something ' + type);
 }
 
 function someDBsReady(response) {
 	var responseText = response.currentTarget.responseText;
-	var current = responseText.substring(soFar);
+	var current = responseText.substring(soFar).replace(/\]\[/g, ',');
 	if(current !== ''){
-		document.getElementById('results').innerHTML += formatResults(current.replace(/\]\[/g, ','));
+		var newRefs = '';
+		try{
+			newRefs = JSON.parse(current).map(renderResult).reduce(function (a, b) {return a + b; }, "");
+			soFar = responseText.length;
+		}
+		catch(e){
+			p(current);
+		}
+		document.getElementById('results').innerHTML += newRefs;
 		$('#results').show();
-		$('.result').unbind("mouseenter").bind("mouseenter", attachDropdown);
+		styles = $('#styles_chosen');
+		$('.result').mouseenter(attachDropdown);
 	}
-	soFar = responseText.length;
 }
 
 function allDBsReady(response) {

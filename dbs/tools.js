@@ -9,8 +9,14 @@ module.exports = {
 		}
 		else {
 			shame.call();
+			if (err === null) {
 			p(('Warning: Request ' + res.req._headers.host + res.req.path), 1);
-			p('  failed with error: ' + ((err === null) ? res.statusCode + ' ' + require('http').STATUS_CODES[res.statusCode] : err), 1);
+				p(('         failed with error: ' + res.statusCode + ' ' + require('http').STATUS_CODES[res.statusCode]), 1);
+			}
+			else{
+				p((err), 1);
+			}
+
 		}
 	},
 
@@ -49,39 +55,28 @@ module.exports = {
 		//returns an array
 		text = text.trim();
 		var firstlast = [
-			/([A-Z]\.[A-Z]\.[A-Z]\.)\s([A-Za-z]+)/,				//A.M.H. Brunsting
-			/([A-Za-z]+\s[A-Z]\.\s[A-Z]\.)\s([A-Za-z]+)/,		//Artur R. M. Serrano
-			/([A-Z]\.\s[A-Z]\.)\s([A-Za-z]+)/,		//J. P. Zaballos
-			/([A-Z]\.\-[A-Z]\.)\s([A-Za-z]+)/,		//S.-A. Bengtson
-			/([A-Za-z]+ [A-Z]\.) ([A-Za-z]+)/,			//Carl H. Lindroth
-			/([A-Za-z]+\s[A-Za-z]+)\s([A-Za-z]+)/,	//Carmen Chavez Ortiz
-			/([A-Za-z]{2,})\s([A-Za-z]{2,})/,		//Lyubomir Penev
-
-			/([A-Z])\s([A-Za-z]+)/,			//M Baehr
-			/([A-Z])\. ([A-Za-z]+)/,		//L. Penev
-			/([A-Za-z])\.\,\s([A-Za-z]+)/,	//L., Penev
-
-			/([A-Z]+)\s([A-Z]+)/,			//BERNHARD KROMP
+			/^([A-Z]\.[A-Z]\.[A-Z]\.)\s+([\S]+)$/,				//A.M.H. Brunsting
+			/^(\S+\s+[A-Z]\.\s+[A-Z]\.)\s+([\S]+)$/,		//Artur R. M. Serrano
+			/^([A-Z]\.\s+[A-Z]\.)\s+([\S]+)$/,		//J. P. Zaballos
+			/^([A-Z]\.\-[A-Z]\.)\s+([\S]+)$/,		//S.-A. Bengtson
+			/^([\S]+\s+[A-Z]\.)\s+([\S]+)$/,			//Carl H. Lindroth
+			/^(\S+\s+\S+)\s+(\S+)$/,	//Carmen Chavez Ortiz
+			/^([\S[^.,]]{2,})\s+([\S]{2,})$/,		//Lyubomir Penev
+			/^([\S^.]\.)\,\s+([\S]+)$/,	//L., Penev
+			/^([\S^.]\.)\s+([\S]+)$/,		//L. Penev
+			/^(\S+)\s+([\S^\.]+)$/,			//M Baehr
 		];
 
-		var lastfirst = [/([A-Za-z]+)\s([A-Z])\./,		//Penev L.
-			/([A-Za-z]+)\,\s([A-Z])\./,		//Penev, L.
-			/([A-Za-z]+)\,\s([A-Za-z]+)/,	//Penev, Lyubomir
-			/([A-Za-z]+)\,\s([A-Z])/,		//Penev, L
-			/([A-Za-z]+)\s\,,\s([A-Z])/,	//Penev ,, L
+		var lastfirst = [
 
-
+			/^([\S]+)\,\s+([A-Z]\.)$/,		//Penev, L.
+			/^([\S]+)\,\s+([A-Z]\.\s*[A-Z]\.)$/,		//Vázquez, D. P.
+			/^([^\s.,]+)\,\s*(.+)$/,	//PenevB, Lyubomir
+			/^([^\s,.]+)\,\s+([A-Z])$/,		//Peneve, L
+			/^([^\s.,]+)\s+\,,\s+([A-Z])$/,	//Penevf ,, L
+			/^([^\s]+)\s+([A-Z]\.)$/,		//Penevc L.
 			];
 		var i, n, lst, l;
-		for (i = 0, n = firstlast.length; i < n; i+=1) {
-			if (firstlast[i].test(text)){
-				//p(firstlast[i])
-				//p(text)
-				lst = firstlast[i].exec(text);
-				l = lst.length;
-				return lst.slice(1, l);
-			}
-		}
 		for (i = 0, n = lastfirst.length; i < n; i+=1) {
 			if (lastfirst[i].test(text)){
 				//p(lastfirst[i])
@@ -91,6 +86,15 @@ module.exports = {
 				var first = lst.slice(2, l);
 				var last = lst[1];
 				return first.concat(last);
+			}
+		}
+		for (i = 0, n = firstlast.length; i < n; i+=1) {
+			if (firstlast[i].test(text)){
+				//p(firstlast[i])
+				//p(text)
+				lst = firstlast[i].exec(text);
+				l = lst.length;
+				return lst.slice(1, l);
 			}
 		}
 		return [text];

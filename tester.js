@@ -13,7 +13,7 @@ module.exports = function (app) {
 		'gnub'  : [],
 		'websrv': [test_websrv]
 	};
-	config.modules2test.filter(function (module) { return config.modules.indexOf(module) > -1; }).forEach(function (module) {
+	config.modules2test.filter(function (module) { return config.modules.indexOf(module) > -1}).forEach(function (module) {
 		tests[module].forEach(function (test) {
 			test.call();
 		});

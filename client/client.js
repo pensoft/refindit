@@ -17,10 +17,23 @@ function p(printThis) { console.log(printThis); }
 function empty(sth) { return typeof sth === 'undefined' || sth === "" || sth === null; }
 
 function queryObj() {
-    var result = {}, keyValuePairs = location.search.slice(1).split('&');
-    keyValuePairs.forEach(function(keyValuePair) {
-        keyValuePair = keyValuePair.split('=');
-        result[keyValuePair[0]] = decodeURI(keyValuePair[1]) || '';
+    var result = {}, key, val, pairs = location.search.slice(1).split('&');
+    pairs.forEach(function(pair) {
+        pair = pair.split('=');
+        key = pair[0];
+        val = pair[1];
+        if (result.hasOwnProperty(key)) {
+            if (Array.isArray(result[key])) {
+                result[key].push(val);
+            }
+            else {
+                result[key] = [result[key], val];
+            }
+        }
+        else {
+            result[key] = decodeURI(val) || '';
+        }
+
     });
     return result;
 }
@@ -248,7 +261,14 @@ function doSearch(type, trigger) {
 	}
 	else{
 		if (typeof db !== 'undefined') {
+			if (Array.isArray(db)){
+				db.forEach(function(d){
+					query += '&db=' + d;
+				});
+			}
+			else {
 			query += '&db=' + db;
+		}
 		}
 		if (typeof limit !== 'undefined') {
 			query += '&limit=' + limit;

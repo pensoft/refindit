@@ -32,7 +32,7 @@ ReFindit currently supports the following search types:
 | [Mendeley](http://www.mendeley.com/)             | ✔      |  ✔       |
 
 
-
+Note: Due to the asynchronous nature of the dataflow, the JSON returned by the search service is almost-valid - it consists of several lists concated as strings - [...][...]. See the function [someDBsReady](https://github.com/pensoft/refindit/blob/master/client/client.js#L188) in the reference client implementation for a workaround.
 
 
 

@@ -29,6 +29,7 @@ module.exports = {
 	// See below for links to obtain the keys.
 	simpleDBs: [
 		'crossref',
+		'datacite',
 		'pubmed',
 		'refbank',
 		'gnub',
@@ -36,6 +37,7 @@ module.exports = {
 	],
 	advancedDBs: [
 		//'crossref',
+		'datacite',
 		'pubmed',
 		'refbank',
 		//'bhlarticles',

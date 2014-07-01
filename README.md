@@ -24,6 +24,7 @@ ReFindit currently supports the following search types:
 | Data source   | simple | advanced |
 | :------------ |:------:| :-------:|
 | [CrossRef](http://crossref.org/)             | ✔      |  ✔       |
+| [DataCite](http://datacite.org/)             | ✔      |  ✔       |
 | [PubMed](http://www.ncbi.nlm.nih.gov/pubmed)             | ✔      |  ✔       |
 | [RefBank](http://refbank.org/)             | ✔      |  ✔       |
 | [GNUB](http://www.globalnames.org/GNUB "Global Names Usage Bank") (incl. [ZooBank](http://zoobank.org/ "The Official Registry of Zoological Nomenclature"))             | ✔      |          |

@@ -100,7 +100,7 @@ function formatResult(res) {
 		  tooltip = ' title="' + res.abstract + '" ';
 		}
 		var infoPage = toString(res.infoUrl, '<a target="_blank" class="info_page" href="', '">' + infoPageTitle + '</a>');
-		if (res.source !== 'CrossRef') {
+		if (res.source !== 'CrossRef' && res.source !== 'DataCite') {
 			infoPage += toString(res.doi, ' <a target="_blank" class="info_page" href="http://' + window.location.host +  '/?search=simple&db=crossref&text=',  '">Find in CrossRef</a>');
 		}
 		var title = toString(res.title, '<br /><span class="title blue">', '</span><br/>');

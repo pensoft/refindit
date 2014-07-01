@@ -2,6 +2,8 @@
 
 ReFindit is a bibliographic references search engine that brings together information from different sources and builds services on top of the unified data.
 
+Start finding now at [ReFindit.org](http://refindit.org).
+
 
 ![](https://raw.github.com/pensoft/refindit/master/client/i/refindit-architecture.png)
 
@@ -35,15 +37,7 @@ ReFindit currently supports the following search types:
 
 Note: Due to the asynchronous nature of the dataflow, the JSON returned by the search service is almost-valid - it consists of several lists concated as strings - [...][...]. See the function [someDBsReady](https://github.com/pensoft/refindit/blob/master/client/client.js#L188) in the reference client implementation for a workaround.
 
+ 
+### ReFindit is powered by ###
 
-
-
-
-
-
-
-
-<!-- 
-## ReFindit services ##
-
-The services are built with Node.js and Express. -->
+[Node.js](http://nodejs.org/) and [Express](http://expressjs.com/).

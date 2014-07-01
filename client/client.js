@@ -103,6 +103,13 @@ function formatResult(res) {
 		if (res.source !== 'CrossRef' && res.source !== 'DataCite') {
 			infoPage += toString(res.doi, ' <a target="_blank" class="info_page" href="http://' + window.location.host +  '/?search=simple&db=crossref&text=',  '">Find in CrossRef</a>');
 		}
+		if (typeof res.publishedIn === 'string'){
+			var pubImg = res.publishedIn.toLowerCase();
+			infoPage += '<img class="pubLogo ' + pubImg
+				+'" alt="" title="'	+ res.publishedIn
+				+'" src="/p/' + pubImg +'.png" onerror=\'this.style.display = "none"\'>';
+		}
+
 		var title = toString(res.title, '<br /><span class="title blue">', '</span><br/>');
 		if (!empty(res.href)) {
 			title = toString(res.title, '<br /><a class="title" ' + tooltip + ' target="_blank" href="' + res.href + '">', '</a><br/>');

@@ -236,10 +236,29 @@ form .source {
 .DataCite {
   background-color: #77c9ea;
 }
+
+.pubLogo,
 .info_page {
   float: left;
   padding-left: 25px;
   padding-top: 17px;
+}
+
+.pubLogo{
+	opacity: 0.3;
+	padding-top: 15px;
+}
+.result:hover .pubLogo {
+	opacity: 0.9
+}
+
+
+.zenodo {
+	padding-top: 12px;
+}
+
+.figshare, gigascience {
+	padding-top: 14px;
 }
 
 .BHLarticles {

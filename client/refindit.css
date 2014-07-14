@@ -209,6 +209,9 @@ input[type="submit"].blue_button {
   float: left;
 }
 
+.relation::first-letter {text-transform:  capitalize;}
+.relation{padding-left: 20px;}
+
 form .source {
   float: left;
   margin-left: 10px;
@@ -289,7 +292,7 @@ form .source {
 }
 
 .ref {
-  width: 660px;
+  width: 760px;
   float: left;
   padding-left: 50px;
   padding-right: 50px;

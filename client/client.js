@@ -85,6 +85,28 @@ function toString(obj, prefix, suffix) {
 	return (empty(obj)) ? "" : prefix + obj + suffix;
 }
 
+function formatIdentifier(idType, idValue){
+	switch(idType){
+		case "URL":
+			return '<a target="_blank" class="href" href="' + idValue + '">' + idValue + '</a>';
+		    break;
+		case "PURL":
+			return '<a target="_blank" class="href" href="http://purl.org/' + idValue + '">PURL: ' + idValue + '</a>';
+		    break;
+		case "DOI":
+			return '<a target="_blank" class="href" href="http://dx.doi.org/' + idValue + '">doi: ' + idValue + '</a>';
+		    break;
+		case "Handle":
+			return '<a target="_blank" class="href" href="http://proxy.handle.net/' + idValue + '">handle: ' + idValue + '</a>';
+		    break;
+		case "PMID":
+			return '<a target="_blank" class="href" href="http://www.ncbi.nlm.nih.gov/pubmed/' + idValue + '">PMID: ' + idValue + '</a>';
+		    break;
+		default:
+    		return idType + ' ' + idValue;
+	};
+}
+
 function formatResult(res) {
 	var parsed = '';
 	var source = '<div class="source ' + res.source.replace(' ', '') + '">' + res.source + "</div>";
@@ -104,7 +126,7 @@ function formatResult(res) {
 			infoPage += toString(res.doi, ' <a target="_blank" class="info_page" href="http://' + window.location.host +  '/?search=simple&db=crossref&text=',  '">Find in CrossRef</a>');
 		}
 		if (typeof res.publishedIn === 'string'){
-			var pubImg = res.publishedIn.toLowerCase();
+		var pubImg = res.publishedIn.toLowerCase();
 			infoPage += '<img class="pubLogo ' + pubImg
 				+'" alt="" title="'	+ res.publishedIn
 				+'" src="/p/' + pubImg +'.png" onerror=\'this.style.display = "none"\'>';
@@ -133,6 +155,16 @@ function formatResult(res) {
 		if (!empty(res.doi)) {
 			url = toString(dxdoi + res.doi, '<br/><a class="href" href=' + dxdoi + res.doi + ' target="_blank">', '</a>');
 		}
+		var related = '';
+		if (typeof res.related !== 'undefined'){
+
+			res.related.map(function(id){
+				related += '<div class="relation">' + id.relation.replace(/([a-z](?=[A-Z]))/g, '$1 ').toLowerCase() + ' ';
+				related += formatIdentifier(id.idType, id.value);
+				related += '</div>';
+			});
+		}
+
 
 		parsed +=
 			toString(res.publishedIn, '<br/>', '') +
@@ -140,7 +172,8 @@ function formatResult(res) {
 			toString(res.issue, '(', ')') +
 			toString(res.spage, ', ', '') +
 			toString(res.epage, '-', '') +
-			url + '<br>';
+			url + '<br>' +
+			related;
 		return parsed + source + infoPage;
 	}
 	return '<div class="plaintext">' + res.fullCitation + '</div>' + source;
@@ -202,7 +235,7 @@ function someDBsReady(response) {
 			soFar = responseText.length;
 		}
 		catch(e){
-			p(current);
+			p(e);
 		}
 		document.getElementById('results').innerHTML += newRefs;
 		$('#results').show();

@@ -19,7 +19,7 @@ function dataciteSimple(text, limit) {
 		host: 'search.datacite.org',
 		pathname: '/api',
 		query: {
-			fl: 'doi,creator,title,publisher,publicationYear',
+			fl: 'doi,creator,title,publisher,publicationYear,alternateIdentifier,relatedIdentifier,resourceType',
 			fq: 'is_active:true',
 			rows: limit,
 			wt: 'json',
@@ -65,7 +65,23 @@ function dataciteParse(body) {
 			publishedIn:	ref.publisher,
 			firstauthor:	authorsList[0] || [],
 			isParsed:		true,
+			id:				ref.alternateIdentifier,
+			related:		parseRelations(ref.relatedIdentifier),
+			type:			ref.resourceType,
 			score:			undefined
 		};
 	}, 'DataCite::References');
+}
+
+function parseRelations(relations) {
+	return tools.safeMap(relations, function (relation) {
+		var id = /(\w*):(\w*):(.*)/.exec(relation);
+		if (id !== null) {
+			return {
+				value: id[3],
+				relation: id[1],
+				idType: id[2],
+			};
+		}
+	}, '');
 }

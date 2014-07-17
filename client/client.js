@@ -126,7 +126,7 @@ function formatResult(res) {
 			infoPage += toString(res.doi, ' <a target="_blank" class="info_page" href="http://' + window.location.host +  '/?search=simple&db=crossref&text=',  '">Find in CrossRef</a>');
 		}
 		if (typeof res.publishedIn === 'string'){
-		var pubImg = res.publishedIn.toLowerCase();
+			var pubImg = res.publishedIn.toLowerCase();
 			infoPage += '<img class="pubLogo ' + pubImg
 				+'" alt="" title="'	+ res.publishedIn
 				+'" src="/p/' + pubImg +'.png" onerror=\'this.style.display = "none"\'>';
@@ -307,8 +307,8 @@ function doSearch(type, trigger) {
 				});
 			}
 			else {
-			query += '&db=' + db;
-		}
+				query += '&db=' + db;
+			}
 		}
 		if (typeof limit !== 'undefined') {
 			query += '&limit=' + limit;
@@ -321,8 +321,10 @@ function doSearch(type, trigger) {
 			$("#results").html('');
 			oReq.addEventListener("load",      allDBsReady, false);
 			oReq.addEventListener("progress", someDBsReady, false);
-			var server = 'http://' + window.location.host;
-			oReq.open("get", server +'/find?' + query + '&more=1', true);
+			var api_call = 'http://' + window.location.host  +'/find?' + query;
+			$('#queries').show();
+			$('#api').attr('href', api_call);
+			oReq.open("get", api_call + '&more=1', true);
 			oReq.send();
 		}
 	}

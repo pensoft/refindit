@@ -70,7 +70,7 @@ function whatSearch(q) {
 	if (q.search === 'simple') {
 		if (q.pwt === '1') {
 			if (isDoi(q.text)) {
-				allowedDBs = ["crossref"];
+				allowedDBs = ["crossref", "datacite"];
 			}
 			if (isPmc(q.text)) {
 				allowedDBs = ["pubmed"];

@@ -111,7 +111,7 @@ function pubMedParse(xml) {
 				editors:		undefined,
 				fullCitation:	undefined,
 				isParsed:		true,
-				type:			refTypes[(path(article, ['PublicationTypeList', 0, 'PublicationType', 0]) || "").toLowerCase()],
+				type:			refTypes[(path(article, ['PublicationTypeList', 0, 'PublicationType', 0, "_"]) || "").toLowerCase()],
 				id:				id,
 				infoUrl:		infoUrl,
 				score:			undefined,

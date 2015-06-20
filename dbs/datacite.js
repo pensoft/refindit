@@ -83,5 +83,5 @@ function parseRelations(relations) {
 				idType: id[2],
 			};
 		}
-	}, '');
+	}, 'DataCite::Relationships');
 }

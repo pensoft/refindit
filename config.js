@@ -44,7 +44,7 @@ module.exports = {
 		//'bhlbooks',
 		//'mendeley'
 	],
-	refBankHost:	'vbrant.ipd.uka.de',
+	refBankHost:	'plazi.cs.umb.edu',
 	gnubHost:		'zoobank.org',
 //	bhlApiKey:		'http://www.biodiversitylibrary.org/getapikey.aspx',
 //	mendeleyApiKey: 'http://dev.mendeley.com/applications/register/',

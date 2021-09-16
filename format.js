@@ -3,12 +3,18 @@
 "use strict";
 
 module.exports = function (app){
-	app.get('/format', craft);
+	app.get('/format', craft); // return
+	app.get('/format/list', list); //get formatters as json
+	app.get('/format/generate-list', generateList); //generate formatters list
 	console.log("Module 'format' loaded");
 };
 
 var config = require('./config');
+var fs = require('fs');
 var p = require('./debug')().p;
+var formatterList = './format/list.json'
+var xml2json = require('xml2js').parseString;
+var crypto = require('crypto');
 
 function craft(req, res) {
 	var q = req.query;
@@ -35,7 +41,7 @@ function common2csl(ref) {
 	if (Array.isArray(ref.authors)) {
 		authors = ref.authors.map(function (author) {
 			return { "family" : author[1],
-				 "given"  : author[0]};
+				"given"  : author[0]};
 		});
 	}
 	return {
@@ -56,7 +62,6 @@ function formatReference(ref, styleName) {
 	var dontSort = true;
 	var CSL = require('./format/citeprocnode');
 	var sys = {};
-	var fs = require('fs');
 	var lang = 'en-US';
 	var result = common2csl(ref);
 	var stylePath = config.stylesPath + styleName + '.csl';
@@ -70,7 +75,7 @@ function formatReference(ref, styleName) {
 		fs.readFileSync(config.localesPath + 'locales-' + lang + '.xml', 'utf8');
 	};
 	sys.getAbbreviations = function(name){
-	   return { default: {} }[name];
+		return { default: {} }[name];
 	};
 	sys.retrieveItem = function(id){
 		return result;
@@ -84,4 +89,40 @@ function formatReference(ref, styleName) {
 		html = mybib[1][0];
 	}
 	return html;
+}
+
+function list(req, res) {
+	res.header('Content-type', 'application/json; charset=utf-8');
+	res.header('Access-Control-Allow-Origin', '*');
+	if(fs.existsSync(formatterList)) {
+		var data = fs.readFileSync(formatterList, 'utf8');
+		res.send(data);
+	} else {
+		res.send(JSON.stringify({error : 'Unable to get data'}));
+	}
+}
+
+function generateList(req, res) {
+	var json = new Object();
+	res.header('Access-Control-Allow-Origin', '*');
+	var files = fs.readdirSync(config.stylesPath)
+		.filter(function(elm) {
+			return elm.match(/.*\.(csl?)/ig);
+		});
+	for (var i = 0; i < files.length; i++) {
+		var file = files[i];
+		var data = fs.readFileSync(config.stylesPath  + file, 'utf8');
+		xml2json(data, function (err, res) {
+			var title = res.style.info[0].title[0];
+			json[crypto.createHash('md5').update(title).digest('hex')] = title;
+		});
+	}
+	fs.writeFile(formatterList, JSON.stringify(json,  null, 4), function (err, data) {
+		if (err) {
+			res.send('Unable to write to JSON list file');
+			return console.log(err);
+		}
+		res.send('JSON list file generated');
+	});
+
 }
